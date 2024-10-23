@@ -12,7 +12,7 @@ class RoleSeeder extends Seeder
 {
     public function run()
     {
-        Role::create(['name' => 'staff', 'guard_name' => 'web']);
+        // Role::create(['name' => 'staff', 'guard_name' => 'web']);
 
         // Membuat role jika belum ada
         $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
@@ -26,7 +26,7 @@ class RoleSeeder extends Seeder
             ]
 
         );
-        $userAdmin->givePermissionTo('view users');
+        // $userAdmin->givePermissionTo('view users');
         // Assign role admin ke pengguna
         $userAdmin->assignRole($adminRole);
 }

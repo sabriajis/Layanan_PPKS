@@ -27,6 +27,8 @@
             <div class="section-body">
                 <h2 class="section-title">Users</h2>
 
+
+
                 <div class="card">
                     <form action="{{ route('user.store') }}" method="POST">
                         @csrf
@@ -37,8 +39,10 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text"
-                                    class="form-control @error('name') is-invalid @enderror"
-                                    name="name" value="{{ old('name') }}">
+                                    class="form-control @error('name')
+                                is-invalid
+                            @enderror"
+                                    name="name">
                                 @error('name')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -48,8 +52,10 @@
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="email"
-                                    class="form-control @error('email') is-invalid @enderror"
-                                    name="email" value="{{ old('email') }}">
+                                    class="form-control @error('email')
+                                is-invalid
+                            @enderror"
+                                    name="email">
                                 @error('email')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -65,7 +71,9 @@
                                         </div>
                                     </div>
                                     <input type="password"
-                                        class="form-control @error('password') is-invalid @enderror"
+                                        class="form-control @error('password')
+                                is-invalid
+                            @enderror"
                                         name="password">
                                 </div>
                                 @error('password')
@@ -80,19 +88,18 @@
                                 <div class="selectgroup w-100">
                                     <label class="selectgroup-item">
                                         <input type="radio" name="role" value="admin" class="selectgroup-input"
-                                            {{ old('role') === 'admin' ? 'checked' : '' }}>
+                                            checked="">
                                         <span class="selectgroup-button">Admin</span>
                                     </label>
-                                    {{-- <label class="selectgroup-item">
-                                        <input type="radio" name="role" value="staf" class="selectgroup-input"
-                                            {{ old('role') === 'staf' ? 'checked' : '' }}>
-                                        <span class="selectgroup-button">Staf</span>
-                                    </label> --}}
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="role" value="user" class="selectgroup-input"
-                                            {{ old('role') === 'user' ? 'checked' : '' }}>
+                                        <input type="radio" name="role" value="anggota" class="selectgroup-input">
+                                        <span class="selectgroup-button">Anggota</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="role" value="user" class="selectgroup-input">
                                         <span class="selectgroup-button">User</span>
                                     </label>
+
                                 </div>
                             </div>
                         </div>
@@ -108,5 +115,4 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraries (jika ada) -->
 @endpush

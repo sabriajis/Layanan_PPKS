@@ -23,22 +23,5 @@ class UserSeeder extends Seeder
             ]
         )->assignRole('admin');
 
-        // Membuat pengguna staff jika belum ada
-        User::firstOrCreate(
-            ['email' => 'staff@gmail.com'],
-            [
-                'name' => 'Staff User',
-                'password' => Hash::make('password123'), // Gantilah dengan password yang sesuai
-            ]
-        )->assignRole('staff');
-
-        // Membuat pengguna biasa jika belum ada
-        User::firstOrCreate(
-            ['email' => 'user@gmail.com'],
-            [
-                'name' => 'Regular User',
-                'password' => Hash::make('password123'), // Gantilah dengan password yang sesuai
-            ]
-        )->assignRole('user');
     }
 }

@@ -1,105 +1,101 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-
-    public function index(Request $request)
-    {
-        // Mengambil pengguna dengan relasi roles dan filter berdasarkan nama atau email
-        $users = User::with('roles')
-            ->when($request->input('name'), function ($query, $name) {
-                $query->where('name', 'like', '%' . $name . '%')
-                      ->orWhere('email', 'like', '%' . $name . '%');
-            })
-            ->paginate(10);
-
-        return view('pages.users.index', compact('users'));
+    public function index (Request $request){
+        $users = DB::table('users')
+        ->when($request->input('name'), function ($query, $name) {
+            $query->where('name', 'like', '%' . $name . '%')
+                ->orWhere('email', 'like', '%' . $name . '%');
+        })
+        ->orderByRaw("CASE
+        WHEN role = 'admin' THEN 1
+        WHEN role = 'anggota' THEN 2
+        WHEN role = 'user' THEN 3
+        ELSE 4
+        END")//membuat agar usernya berurutan
+        ->paginate(10);
+    return view('pages.users.index', compact('users'));
     }
 
     public function create()
     {
-        // Mengambil semua role untuk ditampilkan di form create
-        $roles = Role::all();
-        return view('pages.users.create', compact('roles'));
+        return view('pages.users.create');
     }
+
 
     public function store(Request $request)
     {
-        // Validasi input
+
+
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8|confirmed', // Menambahkan konfirmasi password
-            'role' => 'required|exists:roles,name',
+            'password' => 'required|min:8',
+            'role' => 'required|in:admin,anggota,user',
         ]);
 
-        // Membuat pengguna baru
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
 
-        // Menambahkan role ke pengguna
-        $user->assignRole($request->role);
+
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = $request->role;
+        $user->save();
 
         return redirect()->route('user.index')->with('success', 'User created successfully');
     }
 
+
     public function show($id)
     {
-        // Mengambil pengguna berdasarkan ID
-        $user = User::with('roles')->findOrFail($id);
-        return view('pages.users.show', compact('user'));
+        return view('pages.users.show');
     }
+
 
     public function edit($id)
     {
-        // Mengambil pengguna dan semua role untuk form edit
-        $user = User::with('roles')->findOrFail($id);
-        $roles = Role::all();
-        return view('pages.users.edit', compact('user', 'roles'));
+        $user = User::findOrFail($id);
+        return view('pages.users.edit', compact('user'));
     }
+
 
     public function update(Request $request, $id)
     {
-        // Validasi input
+
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed', // Menambahkan konfirmasi password
-            'role' => 'required|exists:roles,name',
+            'name' => 'required',
+            'email' => 'required',
+            'role' => 'required|in:admin,anggota,user',
         ]);
 
-        // Mengambil pengguna berdasarkan ID
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
-
-        // Hanya memperbarui password jika ada input
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
+        $user->role = $request->role;
         $user->save();
 
-        // Sinkronisasi role baru
-        $user->syncRoles([$request->role]);
+
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
 
         return redirect()->route('user.index')->with('success', 'User updated successfully');
     }
 
+
     public function destroy($id)
     {
-        // Mengambil pengguna berdasarkan ID dan menghapusnya
-        $user = User::findOrFail($id);
+
+        $user = User::find($id);
         $user->delete();
 
         return redirect()->route('user.index')->with('success', 'User deleted successfully');

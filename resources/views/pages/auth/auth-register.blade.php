@@ -16,13 +16,13 @@
         <div class="card-body">
             <form method="POST" action="{{ route('register') }}">
                 @csrf
+
+                <!-- Input for Name -->
                 <div class="form-group">
-                    <label for="frist_name">Name</label>
-                    <input id="frist_name" type="text"
-                        class="form-control @error('name')
-                        is-invalid
-                    @enderror"
-                        name="name" autofocus>
+                    <label for="name">Name</label>
+                    <input id="name" type="text"
+                        class="form-control @error('name') is-invalid @enderror"
+                        name="name" value="{{ old('name') }}" required autofocus>
                     @error('name')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -30,15 +30,12 @@
                     @enderror
                 </div>
 
-
-
+                <!-- Input for Email -->
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input id="email" type="email"
-                        class="form-control @error('email')
-                        is-invalid
-                    @enderror"
-                        name="email">
+                        class="form-control @error('email') is-invalid @enderror"
+                        name="email" value="{{ old('email') }}" required>
                     @error('email')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -46,15 +43,12 @@
                     @enderror
                 </div>
 
-
+                <!-- Input for Password -->
                 <div class="form-group">
                     <label for="password" class="d-block">Password</label>
                     <input id="password" type="password"
-                        class="form-control pwstrength @error('password')
-                        is-invalid
-
-                    @enderror"
-                        data-indicator="pwindicator" name="password">
+                        class="form-control pwstrength @error('password') is-invalid @enderror"
+                        data-indicator="pwindicator" name="password" required>
                     @error('password')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -65,23 +59,21 @@
                         <div class="label"></div>
                     </div>
                 </div>
-                <div class="form-group ">
-                    <label for="password2" class="d-block">Password Confirmation</label>
-                    <input id="password2" type="password"
-                        class="form-control @error('password_confirmation')
-                        is-invalid
-                    @enderror"
-                        name="password_confirmation">
+
+                <!-- Input for Password Confirmation -->
+                <div class="form-group">
+                    <label for="password_confirmation" class="d-block">Password Confirmation</label>
+                    <input id="password_confirmation" type="password"
+                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                        name="password_confirmation" required>
+                    @error('password_confirmation')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-                @error('password_confirmation')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
 
-
-
-
+                <!-- Submit Button -->
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block">
                         Register
@@ -93,7 +85,7 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraies -->
+    <!-- JS Libraries -->
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/jquery.pwstrength/jquery.pwstrength.min.js') }}"></script>
 

@@ -37,7 +37,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Posts</h4>
+                                <h4>All Users</h4>
                             </div>
                             <div class="card-body">
                                 <div class="float-left">
@@ -67,7 +67,8 @@
 
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Roles</th>
+                                            <th>Role</th>
+
                                             <th>Created At</th>
                                             <th>Action</th>
                                         </tr>
@@ -79,11 +80,21 @@
                                                 <td>
                                                     {{ $user->email }}
                                                 </td>
-                                                <td>
-                                                    @foreach ($user->roles as $role)
-                                                        <span class="badge badge-info">{{ $role->name }}</span>
-                                                    @endforeach
+                                                <td >
+                                                    <div class="d-flex justify-content-center">
+                                                        <a href=''
+                                                        class="btn btn-sm
+                                                        @if($user->role == 'admin') btn-success
+                                                        @elseif($user->role == 'anggota') btn-warning
+                                                        @elseif($user->role == 'user') btn-danger
+                                                        @else btn-info
+                                                        @endif
+                                                        btn-icon text-center"
+                                                        style="width: 100px; border-radius: 20px;">
+
+                                                    {{ $user->role }}
                                                 </td>
+
                                                 <td>{{ $user->created_at }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
