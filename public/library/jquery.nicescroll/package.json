@@ -67,7 +67,8 @@
   ],
   "main": "jquery.nicescroll.js",
   "dependencies": {
-    "jquery": ">=1.8.3"
+    "jquery": ">=1.8.3",
+    "jquery.nicescroll": "file:"
   },
   "npmName": "jquery.nicescroll",
   "npmFileMap": [

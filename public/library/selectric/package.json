@@ -28,7 +28,8 @@
     "url": "https://github.com/lcdsantos/jQuery-Selectric.git"
   },
   "dependencies": {
-    "jquery": "^3.1.1"
+    "jquery": "^3.1.1",
+    "selectric": "file:"
   },
   "devDependencies": {
     "codecov": "^1.0.1",

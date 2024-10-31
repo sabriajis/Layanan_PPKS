@@ -99,5 +99,8 @@
     "lint": "gulp lint-and-example-repos",
     "test": "gulp test:single",
     "check-env": "check-node-version --node 11"
+  },
+  "dependencies": {
+    "fullcalendar": "file:"
   }
 }

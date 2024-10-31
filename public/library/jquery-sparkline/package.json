@@ -28,5 +28,8 @@
   "devDependencies": {
     "shelljs": "~0.6",
     "uglify-js": "~2.6"
+  },
+  "dependencies": {
+    "jquery-sparkline": "file:"
   }
 }

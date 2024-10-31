@@ -40,5 +40,8 @@
     "gulp-size": "latest",
     "gulp-uglify": "latest",
     "jshint-stylish": "latest"
+  },
+  "dependencies": {
+    "simpleweather": "file:"
   }
 }

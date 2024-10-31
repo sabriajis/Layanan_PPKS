@@ -83,5 +83,8 @@
 			"themes/*.css",
 			"prism.js"
 		]
+	},
+	"dependencies": {
+		"prismjs": "file:"
 	}
 }

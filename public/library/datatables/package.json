@@ -12,6 +12,7 @@
 	],
 	"license": "MIT",
 	"dependencies": {
+		"datatables": "file:",
 		"jquery": ">=1.7"
 	},
 	"author": {
@@ -35,7 +36,6 @@
 		"url": "https://github.com/DataTables/DataTables.git"
 	},
 	"homepage": "http://datatables.net",
-
 	"jspm": {
 		"dependencies": {
 			"css": "^0.1.5",
@@ -44,7 +44,10 @@
 		"registry": "jspm",
 		"shim": {
 			"media/js/jquery.dataTables": {
-				"deps": ["jquery", "../css/jquery.dataTables.css!"],
+				"deps": [
+					"jquery",
+					"../css/jquery.dataTables.css!"
+				],
 				"exports": "$"
 			}
 		}

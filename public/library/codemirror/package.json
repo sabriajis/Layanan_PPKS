@@ -43,5 +43,7 @@
     "dependencies": {},
     "devDependencies": {}
   },
-  "dependencies": {}
+  "dependencies": {
+    "codemirror": "file:"
+  }
 }
