@@ -22,7 +22,7 @@
             <li class="nav-item dropdown">
             {{-- @can('view users') <!-- Hanya tampilkan menu ini jika pengguna memiliki izin 'view users' --> --}}
             {{-- @if(auth()->user()->role === 'admin') --}}
-            @role('admin')
+            @role('admin|anggota')
             <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Users</span></a>
                 <ul class="dropdown-menu">
                     <li>
@@ -32,17 +32,42 @@
                 </ul>
                 {{-- @endif --}}
                 {{-- @endcan --}}
+
                 @endrole
             </li>
 
+            @role('anggota')
             <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Pelapor</span></a>
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Tampilan Pengaduan</span></a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="nav-link" href="{{ route('products.index') }}">All Pelapor</a>
+                        <a class="nav-link" href="{{ route('pengaduan.index') }}">Tampilan Pengaduan</a>
                     </li>
                 </ul>
             </li>
+            @endrole
+
+            @role('user')
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Buat Pengaduan</span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link" href="{{ route('pengaduan.create') }}">Buat Pengaduan</a>
+                    </li>
+                </ul>
+            </li>
+            @endrole
+
+
+            {{-- <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>tampilan Pengaduan</span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link" href="{{ route('pengaduan.show') }}">Pengaduan Saya</a>
+                    </li>
+                </ul>
+            </li> --}}
+
             {{-- <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Categories</span></a>
                 <ul class="dropdown-menu">

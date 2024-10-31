@@ -43,5 +43,8 @@
     "karma-phantomjs-launcher": "~0.1.3",
     "phantomjs": "~1.9.7-15"
   },
-  "banner": "/*\n * <%= pkg.name %> v<%= pkg.version %> by <%= pkg.author %>\n * <%= pkg.license.url %>\n */\n"
+  "banner": "/*\n * <%= pkg.name %> v<%= pkg.version %> by <%= pkg.author %>\n * <%= pkg.license.url %>\n */\n",
+  "dependencies": {
+    "bootstrap-tagsinput": "file:"
+  }
 }

@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
+
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\PengaduanController;
+use App\Http\Controllers\PengaduanUserController;
 
 
 //Route untuk register
@@ -31,19 +32,19 @@ Route::middleware(['auth'])->group(function () {
     })->name('home');
 
     // Route manajemen user, hanya bisa diakses oleh admin
-    Route::middleware(['role:admin'])->group(function () {
+    Route::middleware(['role:admin|anggota'])->group(function () {
         Route::resource('user', UserController::class);
     });
 
-    // // Route manajemen kategori, bisa diakses oleh admin dan staff
-    // Route::middleware(['role:admin|staff'])->group(function () {
-    //     Route::resource('categories', CategoryController::class);
-    // });
+    // Route manajemen pengaduan, bisa diakses oleh admin dan anggota
+    Route::middleware(['role:anggota|user'])->group(function () {
+        Route::resource('pengaduan', PengaduanController::class);
+     });
+    // Route::middleware(['role:user'])->group(function () {
+    //     Route::resource('pengaduanuser', PengaduanUserController::class);
+    //  });
 
-    // // Route manajemen produk, bisa diakses oleh admin dan staff
-    // Route::middleware(['role:admin|staff'])->group(function () {
-    //     Route::resource('products', ProductController::class);
-    // });
+
 
     // // Route tambahan yang hanya bisa diakses oleh pengguna dengan permission 'edit users'
     // Route::group(['middleware' => ['permission:edit users']], function () {

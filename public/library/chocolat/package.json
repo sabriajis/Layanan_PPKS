@@ -12,6 +12,7 @@
     "prettier": "./node_modules/.bin/prettier src/js/*.js test/*.js --write"
   },
   "dependencies": {
+    "chocolat": "file:",
     "jquery": "^3.0"
   },
   "devDependencies": {

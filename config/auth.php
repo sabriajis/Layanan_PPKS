@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'anggota' => [
+            'driver' => 'session', // atau gunakan 'token' jika sesuai kebutuhan Anda
+            'provider' => 'users', // pastikan provider-nya benar
+        ],
     ],
 
     /*
