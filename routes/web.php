@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PengaduanUserController;
+use App\Http\Controllers\DashboardController;
 
 
 //Route untuk register
@@ -27,9 +28,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 
     // Dashboard route
-    Route::get('home', function () {
-        return view('pages.dashboard');
-    })->name('home');
+    Route::get('home', [DashboardController::class, 'index'])->name('home');
 
     // Route manajemen user, hanya bisa diakses oleh admin
     Route::middleware(['role:admin|anggota'])->group(function () {
@@ -37,12 +36,18 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Route manajemen pengaduan, bisa diakses oleh admin dan anggota
-    Route::middleware(['role:anggota|user'])->group(function () {
+    Route::middleware(['role:anggota|admin'])->group(function () {
         Route::resource('pengaduan', PengaduanController::class);
+        Route::post('/pengaduan/{id}/update-status', [PengaduanController::class, 'updateStatus'])->name('pengaduan.updateStatus');
      });
-    // Route::middleware(['role:user'])->group(function () {
-    //     Route::resource('pengaduanuser', PengaduanUserController::class);
-    //  });
+
+
+     Route::middleware(['auth', 'role:user'])->group(function () {
+        Route::get('/pengaduanuser', [PengaduanUserController::class, 'index'])->name('pengaduanuser.index');
+        Route::get('/pengaduanuser/create', [PengaduanUserController::class, 'create'])->name('pengaduanuser.create');
+        Route::post('/pengaduanuser/store', [PengaduanUserController::class, 'store'])->name('pengaduanuser.store');
+        Route::get('/pengaduanuser/{id}', [PengaduanUserController::class, 'show'])->name('pengaduanuser.show');
+      });
 
 
 

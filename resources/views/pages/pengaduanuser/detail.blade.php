@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ route('pengaduan.index') }}" class="btn btn-secondary">Kembali</a>
+                        <a href="{{ route('pengaduanuser.index') }}" class="btn btn-secondary">Kembali</a>
                     </div>
                 </div>
             </div>

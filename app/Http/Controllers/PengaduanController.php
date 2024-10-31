@@ -12,13 +12,21 @@ class PengaduanController extends Controller
     public function index(Request $request)
     {
         $pengaduans = Pengaduan::query()
-            ->when($request->input('name'), function ($query, $name) {
-                $query->where('name', 'like', '%' . $name . '%')
-                      ->orWhere('laporan', 'like', '%' . $name . '%');
-            })
-            ->paginate(10);
+        ->join('users', 'pengaduans.user_id', '=', 'users.id') // Pastikan tabel pengaduans ditulis dengan benar
+        ->select('pengaduans.*', 'users.email as user_email') // Memilih semua kolom dari pengaduans dan nama pengguna
+        ->when($request->input('name'), function ($query, $name) {
+            $query->where('pengaduans.name', 'like', '%' . $name . '%')
+                  ->orWhere('pengaduans.laporan', 'like', '%' . $name . '%');
+        }) ->orderByRaw("CASE
+        WHEN status = 'pending' THEN 1
+        WHEN status = 'proses' THEN 2
+        WHEN status = 'selesai' THEN 3
+        ELSE 4
+        END") // Membuat agar usernya berurutan
+    ->paginate(10);
 
-        return view('pages.pengaduan.index', compact('pengaduans'));
+
+    return view('pages.pengaduan.index', compact('pengaduans'));
     }
 
     // Menampilkan form untuk membuat pengaduan
@@ -36,7 +44,15 @@ class PengaduanController extends Controller
             'user' => 'required|in:Mahasiswa,Dosen,anonim',
             'laporan' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+
         ]);
+
+
+            // Ambil user ID
+            $userId = auth()->id();
+            if (!$userId) {
+                return redirect()->back()->with('error', 'Anda harus login untuk membuat pengaduan.');
+            }
 
         // Simpan gambar jika ada
         $imagePath = null; // Default jika tidak ada gambar
@@ -52,15 +68,17 @@ class PengaduanController extends Controller
             $image->move(public_path('assets/img/pengaduan'), $imageName);
         }
 
+
         // Buat pengaduan baru
         Pengaduan::create([
             'name' => $request->name,
             'user' => $request->user,
             'laporan' => $request->laporan,
             'image' => $imagePath,
+            'user_id' => $userId, // Mengisi user_id dengan ID pengguna yang sedang login
         ]);
 
-        return redirect()->route('pengaduan.create')->with('success', 'Pengaduan created successfully');
+        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan created successfully');
     }
 
     // Menampilkan detail pengaduan
@@ -85,6 +103,7 @@ class PengaduanController extends Controller
             'laporan' => 'required',
             'status' => 'required|in:pending,proses,selesai',
             'image' => 'nullable|image|max:2048', // Validasi gambar, jika ada
+
         ]);
 
         $pengaduan = Pengaduan::find($id);
@@ -132,5 +151,23 @@ class PengaduanController extends Controller
 
         $pengaduan->delete();
         return redirect()->route('pengaduan.index')->with('success', 'Pengaduan deleted successfully');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Validasi input status
+        $request->validate([
+            'status' => 'required|string|in:pending,proses,selesai',
+        ]);
+
+        // Temukan pengaduan berdasarkan ID
+        $pengaduan = Pengaduan::findOrFail($id);
+
+        // Update status pengaduan
+        $pengaduan->status = $request->status;
+        $pengaduan->save();
+
+        // Respons sukses
+        return response()->json(['success' => true, 'message' => 'Status pengaduan berhasil diperbarui.']);
     }
 }

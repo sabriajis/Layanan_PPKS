@@ -12,7 +12,7 @@
             <div class="section-body">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('pengaduanuser.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Nama</label>
@@ -35,8 +35,8 @@
                                 <label for="image">Image</label>
                                 <input type="file" class="form-control" name="image">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{{ route('home') }}" class="btn btn-secondary">Kembali</a>
+                            <button type="submit" class="btn btn-primary">Kirim Laporan</button>
+
                         </form>
                     </div>
                 </div>

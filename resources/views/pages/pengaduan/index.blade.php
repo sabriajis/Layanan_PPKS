@@ -13,7 +13,7 @@
             <div class="section-header">
                 <h1>Pengaduan</h1>
                 <div class="section-header-button">
-                    {{-- <a href="{{ route('pengaduan.create') }}" class="btn btn-primary">Add New</a> --}}
+                    <a href="{{ route('pengaduan.create') }}" class="btn btn-primary">Buat Pengaduan</a>
                 </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -31,7 +31,6 @@
                 <p class="section-lead">
                     You can manage all Pengaduan, such as editing, deleting, and more.
                 </p>
-
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
@@ -66,6 +65,7 @@
                                             <th>No</th>
                                             <th>Name</th>
                                             <th>Akun</th>
+                                            <th>Pekerjaan</th>
                                             <th>Tanggal Pengaduan</th>
                                             <th>Status Laporan</th>
                                             <th>Action</th>
@@ -74,6 +74,7 @@
                                             <tr>
                                                 <th>{{ $loop->iteration }}</th>
                                                 <td>{{ $pengaduan->name }}</td>
+                                                <td>{{ $pengaduan->user_email ?? 'Unknown' }}</td>
                                                 <td>{{ $pengaduan->user }}</td>
                                                 <td>{{ $pengaduan->created_at }}</td>
                                                 <td>
@@ -91,10 +92,21 @@
                                                             <i class="fas fa-eye"></i> Detail
                                                         </a>
 
-                                                        <a href='{{ route('pengaduan.edit', $pengaduan->id) }}' class="btn btn-sm btn-info btn-icon"">
+                                                        {{-- <a href='{{ route('pengaduan.edit', $pengaduan->id) }}' class="btn btn-sm btn-info btn-icon"">
                                                             <i class="fas fa-edit"></i>
                                                             Edit
-                                                        </a>
+                                                        </a> --}}
+                                                        <!-- Tombol Edit untuk memperbarui status pengaduan -->
+                                                         <!-- Tombol untuk memperbarui status -->
+                                                         @if ($pengaduan->status == 'pending')
+                                                         <button class="btn btn-sm btn-info btn-icon" onclick="updateStatus('{{ $pengaduan->id }}', 'proses')">
+                                                             <i class="fas fa-edit"></i> Proses
+                                                         </button>
+                                                        @elseif ($pengaduan->status == 'proses')
+                                                            <button class="btn btn-sm btn-success btn-icon" onclick="updateStatus('{{ $pengaduan->id }}', 'selesai')">
+                                                                <i class="fas fa-check"></i> Selesai
+                                                            </button>
+                                                        @endif
 
                                                         <form action="{{ route('pengaduan.destroy', $pengaduan->id) }}" method="POST" class="ml-2">
                                                             @csrf
@@ -127,4 +139,31 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
+
+    <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
+
+    <script>
+        function updateStatus(pengaduanId, status) {
+            // Konfirmasi sebelum mengupdate status
+            if (confirm('Apakah Anda yakin ingin mengubah status pengaduan ini menjadi ' + status + '?')) {
+                $.ajax({
+                    url: '{{ url('/pengaduan') }}/' + pengaduanId + '/update-status',
+                    type: 'POST',
+                    data: {
+                        status: status,
+                        _token: '{{ csrf_token() }}' // Token CSRF untuk keamanan
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload(); // Memuat ulang halaman
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan saat memperbarui status. Silakan coba lagi.');
+                    }
+                });
+            }
+        }
+        </script>
 @endpush
