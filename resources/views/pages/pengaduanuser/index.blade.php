@@ -13,7 +13,7 @@
             <div class="section-header">
                 <h1>Pengaduan Saya</h1>
                 <div class="section-header-button">
-                    {{-- <a href="{{ route('pengaduan.create') }}" class="btn btn-primary">Add New</a> --}}
+                        <a href="{{ route('pengaduanuser.create') }}" class="btn btn-primary">Buat Pengaduan</a>
                 </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -28,16 +28,18 @@
                     </div>
                 </div>
                 <h2 class="section-title">Pengaduan Saya</h2>
+
                 <p class="section-lead">
                     You can manage all Pengaduan, such as editing, deleting, and more.
                 </p>
-
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+
                                 <h4>All Pengaduan Saya</h4>
                             </div>
+
                             <div class="card-body">
                                 <div class="float-left">
                                     <select class="form-control selectric">
@@ -48,6 +50,7 @@
                                     </select>
                                 </div>
                                 <div class="float-right">
+
                                     <form method="GET" action="{{ route('pengaduanuser.index') }}">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search" name="name">
@@ -64,17 +67,16 @@
                                     <table class="table-striped table">
                                         <tr>
                                             <th>No</th>
-                                            <th>Name</th>
-                                            <th>Tanggal Pengaduan</th>
-                                            <th>Status Laporan</th>
-                                            <th>Action</th>
+                                            <th>Judul Laporan</th>
+                                            <th>Tanggal</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
                                         </tr>
-                                        @foreach ($pengaduans as $pengaduan)
+                                        @foreach($pengaduans as $pengaduan)
                                             <tr>
                                                 <th>{{ $loop->iteration }}</th>
-                                                <td>{{ $pengaduan->name }}</td>
-                                           
-                                                <td>{{ $pengaduan->created_at }}</td>
+                                                <td>{{ $pengaduan->laporan }}</td>
+                                                <td>{{ $pengaduan->created_at->format('d-m-Y') }}</td>
                                                 <td>
                                                     <span class="badge
                                                         @if($pengaduan->status == 'pending') bg-danger
@@ -85,24 +87,7 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                 <div class="d-flex justify-content-center">
-                                                        <a href='{{ route('pengaduan.show', $pengaduan->id) }}' class="btn btn-sm btn-success btn-icon" style="margin-right: 10px;">
-                                                            <i class="fas fa-eye"></i> Detail
-                                                        </a>
-
-                                                        <a href='{{ route('pengaduan.edit', $pengaduan->id) }}' class="btn btn-sm btn-info btn-icon"">
-                                                            <i class="fas fa-edit"></i>
-                                                            Edit
-                                                        </a>
-
-                                                        <form action="{{ route('pengaduan.destroy', $pengaduan->id) }}" method="POST" class="ml-2">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete ">
-                                                                <i class="fas fa-times"></i> Delete
-                                                            </button>
-                                                        </form>
-                                                    </div>
+                                                    <a href="{{ route('pengaduanuser.show', $pengaduan->id) }}" class="btn btn-info">Lihat</a>
                                                 </td>
                                             </tr>
                                         @endforeach

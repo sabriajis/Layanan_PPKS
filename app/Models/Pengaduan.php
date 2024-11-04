@@ -15,5 +15,6 @@ class Pengaduan extends Model
         'status',
         'laporan',
         'image',
+        'user_id',
     ];
 }
